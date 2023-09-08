@@ -4,7 +4,8 @@ public class CompleteOrderCommandValidator : AbstractValidator<CompleteOrderComm
 {
     public CompleteOrderCommandValidator(ILogger<CompleteOrderCommandValidator> logger)
     {
-        RuleFor(order => order.OrderNumber).NotEmpty().NotNull().WithMessage("Cannot be empty or null orderid");
+        RuleFor(order => order.OrderNumber)
+              .GreaterThan(0).WithMessage("ordernumber must be greater than 0");
 
         logger.LogTrace($"INSTANCE CREATED - {GetType().Name}");
     }

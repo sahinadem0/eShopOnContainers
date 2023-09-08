@@ -22,6 +22,7 @@ services.AddMediatR(cfg =>
 });
 
 // Register the command validators for the validator behavior (validators based on FluentValidation library)
+services.AddSingleton<IValidator<CompleteOrderCommand>, CompleteOrderCommandValidator>();
 services.AddSingleton<IValidator<CancelOrderCommand>, CancelOrderCommandValidator>();
 services.AddSingleton<IValidator<CreateOrderCommand>, CreateOrderCommandValidator>();
 services.AddSingleton<IValidator<IdentifiedCommand<CreateOrderCommand, bool>>, IdentifiedCommandValidator>();
@@ -49,6 +50,7 @@ app.MapControllers();
 
 var eventBus = app.Services.GetRequiredService<IEventBus>();
 
+eventBus.Subscribe<OrderCompletedIntegrationEvent, IIntegrationEventHandler<OrderCompletedIntegrationEvent>>();
 eventBus.Subscribe<UserCheckoutAcceptedIntegrationEvent, IIntegrationEventHandler<UserCheckoutAcceptedIntegrationEvent>>();
 eventBus.Subscribe<GracePeriodConfirmedIntegrationEvent, IIntegrationEventHandler<GracePeriodConfirmedIntegrationEvent>>();
 eventBus.Subscribe<OrderStockConfirmedIntegrationEvent, IIntegrationEventHandler<OrderStockConfirmedIntegrationEvent>>();
